@@ -7,7 +7,7 @@ description: Quando uma resposta terminou um trabalho repetível, sugere um CLI 
 
 # Pytho-inator
 
-O CLI faz a tarefa. O agente roda um comando e lê a última linha. Skill longa que reexplica os mesmos passos é token jogado fora.
+O CLI faz a tarefa. O agente roda um comando e lê a última linha. Skill longa que reexplica os mesmos passos é token jogado fora. Uma chamada de CLI é leve, rápida, e pode rodar em paralelo com o resto do turno. Python entra porque é dinâmica: o tipo não é escrito no arquivo, então o script fica curto de gerar e de reler.
 
 Executável neste projeto: `ferramentas/Pytho-inator/pytho-inator`. Dentro do repo: `./pytho-inator`.
 
@@ -17,7 +17,7 @@ O scanner só aponta. Quem decide é o agente. `shape=fan-out` é menu (ferramen
 
 No Claude Code com o mod `pytho-inator` instalado, a linha já aparece debaixo da resposta. Não rode `glance` de novo.
 
-Nos outros agentes:
+Nos outros agentes (use `turn --cmd="<bash do turno>" <arquivos>` pra incluir os comandos que rodou):
 
 1. Termine o pedido do Pedro.
 2. Rode `ferramentas/Pytho-inator/pytho-inator glance` nos arquivos que você criou ou editou neste turno.

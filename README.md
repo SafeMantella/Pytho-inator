@@ -8,7 +8,9 @@ The procedure the agent follows is [`skills/pytho-inator/SKILL.md`](skills/pytho
 
 ## Why
 
-A skill that spells five shell commands spends tokens every time an agent reads it, and the agent can still drop a step. A CLI that finishes the task spends one command. That is the whole point of this repo. If one command can do the job, the skill shrinks to that command.
+A skill that spells five shell commands spends tokens every time an agent reads it, and the agent can still drop a step. A CLI that finishes the task spends one command. If one command can do the job, the skill shrinks to that command.
+
+The point is tokens. One CLI call is light and fast, and Claude can run it in parallel with other work in the same turn. Python keeps that call cheap on the way in and on the way back: it is dynamically typed, so the types are not written in the file. The script is short to generate and short to read.
 
 The scanner does not make that decision. It prints a short hint. The agent drops menus (`fan-out`) and anything that is taste, approval, voice, or strategy (`judgment=keep`).
 

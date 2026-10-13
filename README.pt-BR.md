@@ -8,6 +8,8 @@ Este arquivo é a versão em português do [README.md](README.md). O procediment
 
 Uma skill que dita cinco comandos de shell gasta token toda vez que o agente a lê, e ainda pode pular um passo. Um CLI que termina a tarefa gasta um comando. Se um comando resolve, a skill encolhe até esse comando.
 
+O ponto é economizar token. Uma chamada de CLI é leve e rápida, e o Claude pode rodá-la em paralelo com outras tarefas no mesmo turno. Python mantém essa chamada barata na ida e na volta: a linguagem é dinâmica, o tipo não é escrito no arquivo, e o script fica curto de gerar e curto de reler.
+
 O scanner não decide. Ele imprime uma dica curta. O agente descarta menu (`fan-out`) e o que for gosto, aprovação, voz ou estratégia (`judgment=keep`).
 
 ## No fim de uma resposta
