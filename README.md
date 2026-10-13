@@ -1,9 +1,5 @@
 # Pytho-inator
 
-<p align="center">
-  <img src="assets/logo.jpg" alt="A laser pistol turns a skill card into a Python script" width="280">
-</p>
-
 An agent skill that turns a repeated, deterministic chore into one free local Python CLI. The agent runs one command and reads the last line. It does not re-think the steps.
 
 Portuguese: [README.pt-BR.md](README.pt-BR.md).
@@ -104,7 +100,6 @@ Check without installing, from inside the repo: `claude plugin validate . && cla
 ## Layout
 
 ```
-assets/logo.jpg       the mark
 pytho-inator          wrapper (uv, then python3)
 pytho_inator.py       the scanner
 hooks/register.ts     Claude Code mod
