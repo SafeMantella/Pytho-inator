@@ -1,0 +1,6 @@
+{
+  "name": "pytho-inator",
+  "description": "One Python CLI hint under a Claude Code answer that wrote or edited files. Silent when nothing collapses.",
+  "owner": { "name": "Pedro Arfux" },
+  "plugins": [{ "name": "pytho-inator", "source": "./" }]
+}

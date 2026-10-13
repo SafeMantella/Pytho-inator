@@ -1,0 +1,10 @@
+[project]
+name = "pytho-inator"
+version = "0.1.0"
+description = "Point an agent at one free local Python CLI instead of a multi-step skill."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.uv]
+package = false

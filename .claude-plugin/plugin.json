@@ -1,0 +1,6 @@
+{
+  "name": "pytho-inator",
+  "version": "0.1.0",
+  "description": "After a turn that wrote or edited files, shows one Python CLI hint under the answer. Silent when nothing collapses.",
+  "author": { "name": "Pedro Arfux" }
+}

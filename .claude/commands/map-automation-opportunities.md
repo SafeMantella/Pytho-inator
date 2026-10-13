@@ -1,0 +1,1 @@
+../../commands/map-automation-opportunities.md

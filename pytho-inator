@@ -1,0 +1,8 @@
+#!/bin/sh
+# One command for agents. uv first; python3 only if uv is missing.
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
+if command -v uv >/dev/null 2>&1; then
+  exec uv run --no-project --python python3 "$ROOT/pytho_inator.py" "$@"
+fi
+exec python3 "$ROOT/pytho_inator.py" "$@"
