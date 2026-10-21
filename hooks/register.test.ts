@@ -33,7 +33,7 @@ test('Write gravado: a linha debaixo da resposta é a saída do glance', async (
   await $.tool.call({ tool: 'Write', file_path: '/work/skills/demo/SKILL.md' })
   const done = await $.turn.complete(turn())
   expect(argv).toHaveLength(1)
-  expect(argv[0][1]).toBe('glance')
+  expect(argv[0][1]).toBe('turn')
   expect(argv[0]).toContain('/work/skills/demo/SKILL.md')
   expect(done.text).toContain('demo  cmds=2  chain')
   expect(done.text).toContain('Quer que eu construa esse CLI?')
@@ -81,4 +81,19 @@ test('subagente não fala; o turno principal vê o arquivo que ele gravou', asyn
   await $.turn.complete(turn())
   expect(argv).toHaveLength(1)
   expect(argv[0]).toContain('/work/b.md')
+})
+
+test('Bash do turno vai como --cmd e sai debaixo da resposta', async ($, on) => {
+  const argv: string[][] = []
+  on('tool.call', () => ({ result: 'ok' }))
+  on('process.run', (_$, e) => {
+    argv.push(e.argv)
+    return { value: { exitCode: 0, stdout: 'turno  cmds=2  chain\n', stderr: '' } }
+  })
+  on('turn.complete', () => ({ text: 'feito' }))
+  await $.tool.call({ tool: 'Bash', command: 'python3 a.py x.wav' })
+  await $.tool.call({ tool: 'Bash', command: 'python3 b.py x.wav' })
+  const done = await $.turn.complete(turn())
+  expect(argv[0]).toContain('--cmd=python3 a.py x.wav')
+  expect(done.text).toContain('turno  cmds=2')
 })

@@ -526,6 +526,12 @@ git -C <pasta> pull --ff-only
     status, notes = verdict("MIT", True, "2026-01-01", datetime(2026, 10, 13))
     expect(status == "check" and "yanked" in notes, "yanked")
 
+    ran = ["python3 a.py clip.mp4 -o audio.wav", "python3 b.py audio.wav -o out.json", "./pytho-inator turn"]
+    t = turn_opp(ran)
+    expect(t is not None and t.shape == "chain" and len(t.cmds) == 2, "turn chain, own CLI ignored")
+    expect(turn_opp(["ls -la x", "cat y.txt"]) is None, "two unrelated commands stay silent")
+    expect(turn_opp(["ffmpeg -i a.mp4 a.wav", "ffmpeg -i b.mp4 b.wav", "ffmpeg -i c.mp4 c.wav"]) is not None, "same tool 3x")
+    expect("próximo:" in format_turn(None, t, Path(".")) and not format_turn(None, None, Path(".")), "turn output")
     expect(format_report("glance", [], 0, Path("."), 5).startswith("glance"), "report header")
     expect(not format_glance([], Path(".")), "empty glance is silent")
 
@@ -563,6 +569,31 @@ def format_glance(opps: list[Opp], cwd: Path) -> str:
     return format_hit(None, best, cwd) + "\n"
 
 
+def turn_opp(cmds: list[str]) -> Opp | None:
+    """Bash commands one turn ran: a chain, or one tool called 3+ times, is a CLI candidate."""
+    ran = unique(c for c in cmds if is_command(c) and "pytho-inator" not in c)
+    if len(ran) < 2:
+        return None
+    shape = shape_of(ran)
+    heads = [c.split()[0] for c in ran]
+    if shape != "chain" and max(heads.count(h) for h in heads) < 3:
+        return None
+    return Opp(path=Path("(turno)"), cmds=ran, judgment=False, heading="comandos deste turno", shape=shape)
+
+
+def format_turn(file_opp: Opp | None, cmd_opp: Opp | None, cwd: Path) -> str:
+    opps = [o for o in (file_opp, cmd_opp) if o]
+    if not opps:
+        return ""
+    best = max(opps, key=rank_key)
+    out = format_hit(None, best, cwd)
+    if best is cmd_opp:
+        todo = "criar 1 CLI Python que roda esses passos numa linha; depois a skill vira só esse comando"
+    else:
+        todo = "encolher essa skill: o CLI faz os passos, a skill guarda só o comando e o julgamento"
+    return f"{out}\n   próximo: {todo}\n"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="pytho-inator",
@@ -581,6 +612,10 @@ def main(argv: list[str] | None = None) -> int:
     glance_cmd = sub.add_parser("glance", help="silent unless a touched file hides one CLI")
     glance_cmd.add_argument("paths", nargs="*")
 
+    turn_cmd = sub.add_parser("turn", help="end-of-turn: files written + bash commands run -> one suggestion")
+    turn_cmd.add_argument("--cmd", dest="cmd_list", action="append", default=[], help="a bash command the turn ran")
+    turn_cmd.add_argument("paths", nargs="*")
+
     vet_cmd = sub.add_parser("vet", help="license, version, and age from the PyPI JSON API")
     vet_cmd.add_argument("names", nargs="+")
 
@@ -596,6 +631,12 @@ def main(argv: list[str] | None = None) -> int:
         lines = [vet_line(name, today) for name in args.names]
         sys.stdout.write("\n".join(lines) + "\n")
         return 0 if all(line.startswith("ok ") for line in lines) else 1
+
+    if args.cmd == "turn":
+        files = [p.resolve() for p in map(Path, args.paths) if p.is_file()]
+        opps, _ = scan(files)
+        sys.stdout.write(format_turn(max(opps, key=rank_key, default=None), turn_opp(args.cmd_list), cwd))
+        return 0
 
     if args.cmd == "glance":
         if args.paths:
