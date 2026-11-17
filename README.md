@@ -63,20 +63,11 @@ Stdlib only. No API key. `uv` runs it; `python3` is the fallback.
 
 ## Install
 
-```bash
-git clone https://github.com/SafeMantella/Pytho-inator.git
-chmod +x Pytho-inator/pytho-inator
+Paste this into Claude Code:
+
 ```
-
-From the project the agent works in, symlink the skill and the two commands (one copy, no drift):
-
-```bash
-ln -s /path/to/Pytho-inator/skills/pytho-inator .claude/skills/pytho-inator
-ln -s /path/to/Pytho-inator/commands/map-automation-opportunities.md .claude/commands/
-ln -s /path/to/Pytho-inator/commands/check-skills.md .claude/commands/
+Install https://github.com/SafeMantella/Pytho-inator as a global Claude Code skill, via symlink. It is not a plugin: do not run `claude plugin install`. Create `~/.claude/skills` and `~/.claude/commands` if they are missing. If `~/.claude/skills/pytho-inator` is already a symlink, use that repo and `git pull`. Otherwise clone into `~/Pytho-inator`. `chmod +x` the `pytho-inator` file at the repo root. Create or replace the symlink from `skills/pytho-inator` to `~/.claude/skills/pytho-inator`, and symlink the two `.md` files in `commands/` into `~/.claude/commands/`. Do not copy the files. When done, show the three paths.
 ```
-
-Opening this repo on its own also loads them: `.claude/` inside the repo points at the same files. For every project on one machine, symlink the skill into `~/.claude/skills/pytho-inator`.
 
 ## Layout
 
