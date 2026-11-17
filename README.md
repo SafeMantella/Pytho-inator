@@ -16,17 +16,15 @@ The scanner does not make that decision. It prints a short hint. The agent drops
 
 ## End of an answer
 
-**Claude Code.** Install the mod in the section below. After a turn that saved a file with Write or Edit, it runs `glance` and shows the hint under the answer. That text is not another model turn. Empty `glance` stays silent. An aborted turn drops the paths. A subagent stays quiet; the main answer sees the files it wrote.
-
-**Every other agent** runs:
+Every agent, including Claude Code, runs `glance` at the end of a response that created or edited a file:
 
 ```bash
 ./pytho-inator glance path/to/file.md
 ```
 
-Empty stdout means silence. A hit is at most three lines and the question "do you want this built?". It does not build in that same turn. When the Claude Code mod is on, do not run `glance` again.
+Empty stdout means silence. A hit is at most three lines and the question "do you want this built?". It does not build in that same turn.
 
-Wire that sentence into the project's always-on instructions (for this social project, `CLAUDE.md`). A skill description alone will not fire after every answer.
+Wire that sentence into the project's always-on instructions. A skill description alone will not fire after every answer.
 
 ## Commands
 
@@ -78,34 +76,13 @@ ln -s /path/to/Pytho-inator/commands/map-automation-opportunities.md .claude/com
 ln -s /path/to/Pytho-inator/commands/check-skills.md .claude/commands/
 ```
 
-Opening this repo on its own also loads them: `.claude/` inside the repo points at the same files.
-
-### Claude Code mod
-
-The plugin root is this repo. The hook calls `./pytho-inator glance`. Installing it edits Claude Code's project settings, so do that only when you want it on.
-
-From a local clone:
-
-```bash
-claude plugin marketplace add ./Pytho-inator --scope project
-claude plugin install pytho-inator@pytho-inator --scope project
-```
-
-Once this repo is on GitHub, Claude Code 2.1.275 or later also accepts:
-
-```
-/plugin install pytho-inator --marketplace SafeMantella/Pytho-inator
-```
-
-Check without installing, from inside the repo: `claude plugin validate . && claude plugin test .`.
+Opening this repo on its own also loads them: `.claude/` inside the repo points at the same files. For every project on one machine, symlink the skill into `~/.claude/skills/pytho-inator`.
 
 ## Layout
 
 ```
 pytho-inator          wrapper (uv, then python3)
 pytho_inator.py       the scanner
-hooks/register.ts     Claude Code mod
-.claude-plugin/       plugin and marketplace manifests
 skills/pytho-inator/  the agent skill
 commands/             /map-automation-opportunities and /check-skills
 ```

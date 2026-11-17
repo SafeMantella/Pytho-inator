@@ -9,31 +9,29 @@ description: Quando uma resposta terminou um trabalho repetível, sugere um CLI 
 
 O CLI faz a tarefa. O agente roda um comando e lê a última linha. Skill longa que reexplica os mesmos passos é token jogado fora. Uma chamada de CLI é leve, rápida, e pode rodar em paralelo com o resto do turno. Python entra porque é dinâmica: o tipo não é escrito no arquivo, então o script fica curto de gerar e de reler.
 
-Executável neste projeto: `ferramentas/Pytho-inator/pytho-inator`. Dentro do repo: `./pytho-inator`.
+Executável: o arquivo `pytho-inator` na raiz deste repositório. Dentro do repo: `./pytho-inator`. Esta skill fica em `skills/pytho-inator` (ou num symlink para essa pasta). O executável está dois diretórios acima de `skills/`. Abaixo, "o executável" é esse arquivo.
 
 O scanner só aponta. Quem decide é o agente. `shape=fan-out` é menu (ferramentas diferentes), não uma tarefa só. `judgment=keep` fica na skill. Não automatize aprovação, voz, gosto, estratégia ou entrevista.
 
 ## No fim de cada resposta
 
-No Claude Code com o mod `pytho-inator` instalado, a linha já aparece debaixo da resposta. Não rode `glance` de novo.
-
-Nos outros agentes (use `turn --cmd="<bash do turno>" <arquivos>` pra incluir os comandos que rodou):
+Em qualquer agente, inclusive o Claude Code, rode o `glance` por conta própria no fim da resposta (use `turn --cmd="<bash do turno>" <arquivos>` pra incluir os comandos que rodou):
 
 1. Termine o pedido do Pedro.
-2. Rode `ferramentas/Pytho-inator/pytho-inator glance` nos arquivos que você criou ou editou neste turno.
+2. Rode o executável com `glance` nos arquivos que você criou ou editou neste turno.
 3. Stdout vazio: não escreva nada sobre isto.
 4. Se houver uma linha: no máximo 3 linhas na resposta. Um CLI, a tarefa pronta na última linha do stdout. Pergunte `Quer que eu construa esse CLI?` Não construa neste turno.
 
 ## `/map-automation-opportunities`
 
-1. Rode `ferramentas/Pytho-inator/pytho-inator map`.
+1. Rode o executável com `map`.
 2. Leia `references/cli-contract.md`.
 3. Mostre no máximo 5. Prefira `shape=chain`. Descarte menu e julgamento.
 4. Pare. Não construa, a menos que o Pedro já tenha pedido a construção nesta mesma mensagem.
 
 ## `/check-skills`
 
-1. Rode `ferramentas/Pytho-inator/pytho-inator check`.
+1. Rode o executável com `check`.
 2. Leia `references/cli-contract.md`.
 3. Para cada hit: o que o CLI substitui, e o que fica na skill quando `judgment=keep`.
 4. Pare. Não edite a skill até o Pedro escolher uma.

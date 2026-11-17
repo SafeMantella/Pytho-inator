@@ -1,6 +1,6 @@
 # Pytho-inator
 
-Claude Code with the pytho-inator mod already shows the hint under the answer. Do not run `glance` again. Every other agent, after a response that did repeatable work, runs `./pytho-inator glance` on the files it created or edited. Empty stdout: say nothing. A hit: one local Python CLI, at most three lines, and ask before building.
+After a response that did repeatable work, every agent, including Claude Code, runs `./pytho-inator glance` on the files it created or edited. Empty stdout: say nothing. A hit: one local Python CLI, at most three lines, and ask before building.
 
 The procedure is `skills/pytho-inator/SKILL.md` (Portuguese). Build rules: `skills/pytho-inator/references/gates.md`. Human docs: `README.md` and `README.pt-BR.md`.
 
