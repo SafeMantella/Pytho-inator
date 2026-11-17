@@ -12,6 +12,22 @@ Cole isto no Claude Code:
 Instala a skill https://github.com/SafeMantella/Pytho-inator no Claude Code, global. Não é plugin.
 ```
 
+## Funciona melhor com estas três
+
+Opcional. O Pytho-inator roda sem elas. Com as três instaladas, funciona muito melhor.
+
+| Skill | Repo |
+|---|---|
+| i-have-adhd | https://github.com/ayghri/i-have-adhd |
+| ponytail | https://github.com/DietrichGebert/ponytail |
+| superpowers | https://github.com/obra/superpowers |
+
+```bash
+./pytho-inator companions
+```
+
+Stdout vazio: as três estão instaladas. O aviso diz o que falta e manda o link do repo. Não para o CLI e não instala nada.
+
 ## Por quê
 
 Uma skill que dita cinco comandos de shell gasta token toda vez que o agente a lê, e ainda pode pular um passo. Um CLI que termina a tarefa gasta um comando. Se um comando resolve, a skill encolhe até esse comando.
@@ -51,6 +67,7 @@ Só stdlib. Sem chave. O `uv` roda; `python3` é o fallback.
 ./pytho-inator glance [arquivos]  # calado, a menos que um arquivo tocado esconda uma cadeia
 ./pytho-inator vet nome [nome]  # licença, versão e data na API JSON do PyPI
 ./pytho-inator self-check       # asserts offline
+./pytho-inator companions       # avisa se falta uma skill companheira
 ```
 
 `map` e `check` olham `.claude/skills`, `.claude/commands`, `skills/` e `commands/`. Não varrem o resto da árvore. `glance` sem caminhos usa `git status` e só skill ou comando alterado. Não imprime nada sem repositório, ou sem essa mudança. Passe o caminho quando a tarefa está em outro arquivo.

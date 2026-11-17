@@ -1,6 +1,6 @@
 ---
 name: pytho-inator
-description: Quando uma resposta terminou um trabalho repetível, sugere um CLI Python local que faz a tarefa inteira num comando. Dispara em pythonizer, pytho-inator, economizar tokens, /map-automation-opportunities e /check-skills. Não constrói nem testa sem um sim.
+description: Quando uma resposta terminou um trabalho repetível, sugere um CLI Python local que faz a tarefa inteira num comando. Dispara em pythonizer, pytho-inator, economizar tokens, /map-automation-opportunities e /check-skills. companions só avisa se faltam i-have-adhd, ponytail ou superpowers. Não constrói nem testa sem um sim.
 ---
 
 <!-- pytho-inator: skip -->
@@ -12,6 +12,12 @@ O CLI faz a tarefa. O agente roda um comando e lê a última linha. Skill longa 
 Executável: o arquivo `pytho-inator` na raiz deste repositório. Dentro do repo: `./pytho-inator`. Esta skill fica em `skills/pytho-inator` (ou num symlink para essa pasta). O executável está dois diretórios acima de `skills/`. Abaixo, "o executável" é esse arquivo.
 
 O scanner só aponta. Quem decide é o agente. `shape=fan-out` é menu (ferramentas diferentes), não uma tarefa só. `judgment=keep` fica na skill. Não automatize aprovação, voz, gosto, estratégia ou entrevista.
+
+## Companions
+
+`i-have-adhd`, `ponytail` e `superpowers` não são obrigatórias. Juntas, esta skill funciona muito melhor. Os links estão no README do repositório.
+
+Antes de `glance`, `map`, `check` ou construir, rode o executável com `companions`. Stdout vazio: as três estão instaladas, siga. Se avisar: mostre o aviso (nome e link) e siga mesmo assim. Não pare. Não instale nada sem um sim.
 
 ## No fim de cada resposta
 

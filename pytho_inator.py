@@ -555,6 +555,41 @@ git -C <pasta> pull --ff-only
         report = format_report("map", opps, scanned, root, 5)
         expect("demo" in report and report.index("demo") < report.index("noise"), "chain listed first")
 
+    with tempfile.TemporaryDirectory() as tmp:
+        home = Path(tmp) / "home"
+        work = Path(tmp) / "work"
+        work.mkdir()
+        report = companion_report(home, work)
+        expect(report.count("missing ") == 3, "three companions missing")
+        expect("https://github.com/ayghri/i-have-adhd" in report, "adhd link")
+        expect("https://github.com/DietrichGebert/ponytail" in report, "ponytail link")
+        expect("https://github.com/obra/superpowers" in report, "superpowers link")
+        claude = home / ".claude"
+        claude.mkdir(parents=True)
+        (claude / "settings.json").write_text(
+            json.dumps({
+                "enabledPlugins": {
+                    "i-have-adhd@i-have-adhd": True,
+                    "ponytail@ponytail": True,
+                    "superpowers@claude-plugins-official": True,
+                }
+            }),
+            encoding="utf-8",
+        )
+        expect(companion_report(home, work) == "", "enabled companions stay silent")
+        (claude / "settings.json").write_text(
+            json.dumps({
+                "enabledPlugins": {"ponytail@ponytail": True},
+                "skillOverrides": {"ponytail": "off"},
+            }),
+            encoding="utf-8",
+        )
+        expect("missing ponytail" in companion_report(home, work), "override off still warns")
+        skill = home / ".claude" / "skills" / "using-superpowers" / "SKILL.md"
+        skill.parent.mkdir(parents=True)
+        skill.write_text("# using-superpowers\n", encoding="utf-8")
+        expect("missing superpowers" not in companion_report(home, work), "skill folder counts")
+
     if fails:
         print("\n".join(f"FAIL {item}" for item in fails))
         return 1
@@ -594,6 +629,81 @@ def format_turn(file_opp: Opp | None, cmd_opp: Opp | None, cwd: Path) -> str:
     return f"{out}\n   próximo: {todo}\n"
 
 
+COMPANIONS = (
+    ("i-have-adhd", "https://github.com/ayghri/i-have-adhd"),
+    ("ponytail", "https://github.com/DietrichGebert/ponytail"),
+    ("superpowers", "https://github.com/obra/superpowers"),
+)
+SKILL_DIRS = {
+    "i-have-adhd": ("i-have-adhd",),
+    "ponytail": ("ponytail",),
+    "superpowers": ("superpowers", "using-superpowers"),
+}
+
+
+def read_json(path: Path) -> dict:
+    if not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def enabled_plugins(path: Path) -> set[str]:
+    data = read_json(path)
+    overrides = data.get("skillOverrides") or {}
+    found: set[str] = set()
+    plugins = data.get("enabledPlugins") or {}
+    if not isinstance(plugins, dict):
+        return found
+    for key, val in plugins.items():
+        if val is not True or not isinstance(key, str) or "@" not in key:
+            continue
+        name = key.split("@", 1)[0]
+        if overrides.get(name) == "off":
+            continue
+        found.add(name)
+    return found
+
+
+def gemini_plugins(path: Path) -> set[str]:
+    plugins = read_json(path).get("plugins") or {}
+    if not isinstance(plugins, dict):
+        return set()
+    return {
+        name
+        for name, body in plugins.items()
+        if isinstance(body, dict) and body.get("enabled") is True
+    }
+
+
+def companion_installed(name: str, home: Path, cwd: Path) -> bool:
+    if name in enabled_plugins(home / ".claude" / "settings.json"):
+        return True
+    if name in enabled_plugins(cwd / ".claude" / "settings.json"):
+        return True
+    if name in gemini_plugins(home / ".gemini" / "config" / "config.json"):
+        return True
+    roots = (
+        home / ".claude" / "skills",
+        home / ".agents" / "skills",
+        cwd / ".claude" / "skills",
+        cwd / "skills",
+    )
+    return any((root / folder / "SKILL.md").is_file() for root in roots for folder in SKILL_DIRS[name])
+
+
+def companion_report(home: Path, cwd: Path) -> str:
+    missing = [(name, url) for name, url in COMPANIONS if not companion_installed(name, home, cwd)]
+    if not missing:
+        return ""
+    lines = ["companions: optional, works much better with all three"]
+    lines.extend(f"missing {name}  {url}" for name, url in missing)
+    return "\n".join(lines) + "\n"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="pytho-inator",
@@ -620,11 +730,16 @@ def main(argv: list[str] | None = None) -> int:
     vet_cmd.add_argument("names", nargs="+")
 
     sub.add_parser("self-check", help="offline asserts")
+    sub.add_parser("companions", help="warn if i-have-adhd, ponytail, or superpowers is missing")
     args = parser.parse_args(argv)
     cwd = Path.cwd()
 
     if args.cmd == "self-check":
         return self_check()
+
+    if args.cmd == "companions":
+        sys.stdout.write(companion_report(Path.home(), cwd))
+        return 0
 
     if args.cmd == "vet":
         today = datetime.now()

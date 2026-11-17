@@ -14,6 +14,22 @@ Paste this into Claude Code:
 Install the https://github.com/SafeMantella/Pytho-inator skill in Claude Code, globally. It is not a plugin.
 ```
 
+## Works better with these three
+
+Optional. Pytho-inator runs without them. With all three installed, it works much better.
+
+| Skill | Repo |
+|---|---|
+| i-have-adhd | https://github.com/ayghri/i-have-adhd |
+| ponytail | https://github.com/DietrichGebert/ponytail |
+| superpowers | https://github.com/obra/superpowers |
+
+```bash
+./pytho-inator companions
+```
+
+Empty output means all three are installed. A warning names what is missing and links the repo. It does not stop the CLI, and it does not install anything.
+
 ## Why
 
 A skill that spells five shell commands spends tokens every time an agent reads it, and the agent can still drop a step. A CLI that finishes the task spends one command. If one command can do the job, the skill shrinks to that command.
@@ -53,6 +69,7 @@ Stdlib only. No API key. `uv` runs it; `python3` is the fallback.
 ./pytho-inator glance [files]   # silent unless a touched file hides a chain
 ./pytho-inator vet name [name]  # license, version, date from the PyPI JSON API
 ./pytho-inator self-check       # offline asserts
+./pytho-inator companions       # warn if a companion skill is missing
 ```
 
 `map` and `check` look at `.claude/skills`, `.claude/commands`, `skills/`, and `commands/`. They do not walk the rest of the tree. `glance` with no paths uses `git status` and only changed skill or command files. It prints nothing when there is no repo, or no such change. Pass paths when the chore lives in another file.
