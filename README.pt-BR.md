@@ -64,7 +64,7 @@ Só stdlib. Sem chave. O `uv` roda; `python3` é o fallback.
 Cole isto no Claude Code:
 
 ```
-Instala https://github.com/SafeMantella/Pytho-inator como skill global do Claude Code, por symlink. Não é plugin: não rode `claude plugin install`. Cria `~/.claude/skills` e `~/.claude/commands` se não existirem. Se `~/.claude/skills/pytho-inator` já for um symlink, usa esse repositório e faz `git pull`. Senão, clona em `~/Pytho-inator`. Dá `chmod +x` no arquivo `pytho-inator` da raiz. Cria ou troca o symlink de `skills/pytho-inator` para `~/.claude/skills/pytho-inator`, e o dos dois `.md` de `commands/` para `~/.claude/commands/`. Não copia os arquivos. No fim, mostra os três caminhos.
+Instala a skill https://github.com/SafeMantella/Pytho-inator no Claude Code, global. Não é plugin.
 ```
 
 ## Layout
