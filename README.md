@@ -6,6 +6,14 @@ Portuguese: [README.pt-BR.md](README.pt-BR.md).
 
 The procedure the agent follows is [`skills/pytho-inator/SKILL.md`](skills/pytho-inator/SKILL.md). This page is the human contract.
 
+## Install
+
+Paste this into Claude Code:
+
+```
+Install the https://github.com/SafeMantella/Pytho-inator skill in Claude Code, globally. It is not a plugin.
+```
+
 ## Why
 
 A skill that spells five shell commands spends tokens every time an agent reads it, and the agent can still drop a step. A CLI that finishes the task spends one command. If one command can do the job, the skill shrinks to that command.
@@ -60,14 +68,6 @@ Stdlib only. No API key. `uv` runs it; `python3` is the fallback.
 - **Ask before testing** what was just written, including its self-check.
 - **Automate the Boring Stuff with Python** (Al Sweigart, free edition) is the catalog of chores: files, text, CSV, JSON, spreadsheets, PDF, Word, images, web pages, time, email, GUI. The book names the chore. It is not a dependency list, and its text is not copied here. The map is in [`gates.md`](skills/pytho-inator/references/gates.md).
 - Library lookup is a free web search plus `vet`. Do not spend a paid research pipeline to pick a package name.
-
-## Install
-
-Paste this into Claude Code:
-
-```
-Install the https://github.com/SafeMantella/Pytho-inator skill in Claude Code, globally. It is not a plugin.
-```
 
 ## Layout
 

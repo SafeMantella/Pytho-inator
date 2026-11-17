@@ -4,6 +4,14 @@ Skill de agente que transforma uma tarefa chata e determinística num CLI Python
 
 Este arquivo é a versão em português do [README.md](README.md). O procedimento que o agente segue está em [`skills/pytho-inator/SKILL.md`](skills/pytho-inator/SKILL.md).
 
+## Instalar
+
+Cole isto no Claude Code:
+
+```
+Instala a skill https://github.com/SafeMantella/Pytho-inator no Claude Code, global. Não é plugin.
+```
+
 ## Por quê
 
 Uma skill que dita cinco comandos de shell gasta token toda vez que o agente a lê, e ainda pode pular um passo. Um CLI que termina a tarefa gasta um comando. Se um comando resolve, a skill encolhe até esse comando.
@@ -58,14 +66,6 @@ Só stdlib. Sem chave. O `uv` roda; `python3` é o fallback.
 - **Perguntar antes de testar** o que acabou de ser escrito, inclusive o `--self-check`.
 - ***Automate the Boring Stuff with Python*** (Al Sweigart, edição grátis) é o catálogo de tarefas: arquivos, texto, CSV, JSON, planilha, PDF, Word, imagem, página web, tempo, e-mail, GUI. O livro nomeia a tarefa. Não é lista de dependência, e o texto dele não é copiado aqui. O mapa está em [`gates.md`](skills/pytho-inator/references/gates.md).
 - Achar biblioteca é busca web grátis mais `vet`. Não gastar um pipeline de pesquisa pago pra escolher um nome de pacote.
-
-## Instalar
-
-Cole isto no Claude Code:
-
-```
-Instala a skill https://github.com/SafeMantella/Pytho-inator no Claude Code, global. Não é plugin.
-```
 
 ## Layout
 
